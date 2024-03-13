@@ -1,0 +1,24 @@
+#using Dockerfile in docker-compose
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+     - mybackups:/var/lib/mysql/
+  wordpress:
+        image: wordpress
+        ports:
+         - 80:80
+        depends_on:
+          - db
+        environment:
+             WORDPRESS_DB_HOST: compose-db-1
+             WORDPRESS_DB_USER: root
+             WORDPRESS_DB_PASSWORD: Pass@123
+             WORDPRESS_DB_NAME: mydb
+        volumes:
+           - wpdata:/var/www/html/
+volumes:
+   mybackups:
+   wpdata:

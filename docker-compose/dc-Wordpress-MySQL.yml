@@ -1,0 +1,37 @@
+# Creating containers of WordPress and MySQL using Docker Compose
+
+# Define the services that make up the application
+services:
+  # Configuration for the MySQL database service
+  db:
+    # Use the 'mysql' image from Docker Hub
+    image: mysql
+
+    # Set environment variables for the MySQL database
+    environment:
+      MYSQL_ROOT_PASSWORD: test@123  # Set the root password for MySQL
+      MYSQL_DATABASE: wordpressdb      # Create a database named 'wordpressdb'
+
+    # Map port 3306 from the host to port 3306 in the container
+    ports:
+      - 3306:3306
+
+  # Configuration for the WordPress service
+  wordpress:
+    # Use the 'wordpress' image from Docker Hub
+    image: wordpress
+
+    # Map port 80 from the host to port 80 in the container
+    ports:
+      - 80:80
+
+    # Specify that the 'wordpress' service depends on the 'db' service
+    depends_on:
+      - db
+
+    # Set environment variables for the WordPress application
+    environment:
+      WORDPRESS_DB_HOST: db            # Hostname of the MySQL database service
+      WORDPRESS_DB_USER: root          # MySQL username
+      WORDPRESS_DB_PASSWORD: test@123  # MySQL password
+      WORDPRESS_DB_NAME: wordpressdb  # Name of the MySQL database to use
